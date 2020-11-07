@@ -13,83 +13,83 @@ import (
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion7
 
-// BBQClient is the client API for BBQ service.
+// IphoneClient is the client API for Iphone service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BBQClient interface {
-	Eat(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+type IphoneClient interface {
+	GetOneByType(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 }
 
-type bBQClient struct {
+type iphoneClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBBQClient(cc grpc.ClientConnInterface) BBQClient {
-	return &bBQClient{cc}
+func NewIphoneClient(cc grpc.ClientConnInterface) IphoneClient {
+	return &iphoneClient{cc}
 }
 
-func (c *bBQClient) Eat(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+func (c *iphoneClient) GetOneByType(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/goods.BBQ/eat", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/goods.Iphone/getOneByType", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BBQServer is the server API for BBQ service.
-// All implementations must embed UnimplementedBBQServer
+// IphoneServer is the server API for Iphone service.
+// All implementations must embed UnimplementedIphoneServer
 // for forward compatibility
-type BBQServer interface {
-	Eat(context.Context, *Request) (*Response, error)
-	mustEmbedUnimplementedBBQServer()
+type IphoneServer interface {
+	GetOneByType(context.Context, *Request) (*Response, error)
+	mustEmbedUnimplementedIphoneServer()
 }
 
-// UnimplementedBBQServer must be embedded to have forward compatible implementations.
-type UnimplementedBBQServer struct {
+// UnimplementedIphoneServer must be embedded to have forward compatible implementations.
+type UnimplementedIphoneServer struct {
 }
 
-func (UnimplementedBBQServer) Eat(context.Context, *Request) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Eat not implemented")
+func (UnimplementedIphoneServer) GetOneByType(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOneByType not implemented")
 }
-func (UnimplementedBBQServer) mustEmbedUnimplementedBBQServer() {}
+func (UnimplementedIphoneServer) mustEmbedUnimplementedIphoneServer() {}
 
-// UnsafeBBQServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BBQServer will
+// UnsafeIphoneServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to IphoneServer will
 // result in compilation errors.
-type UnsafeBBQServer interface {
-	mustEmbedUnimplementedBBQServer()
+type UnsafeIphoneServer interface {
+	mustEmbedUnimplementedIphoneServer()
 }
 
-func RegisterBBQServer(s grpc.ServiceRegistrar, srv BBQServer) {
-	s.RegisterService(&_BBQ_serviceDesc, srv)
+func RegisterIphoneServer(s grpc.ServiceRegistrar, srv IphoneServer) {
+	s.RegisterService(&_Iphone_serviceDesc, srv)
 }
 
-func _BBQ_Eat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Iphone_GetOneByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BBQServer).Eat(ctx, in)
+		return srv.(IphoneServer).GetOneByType(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/goods.BBQ/eat",
+		FullMethod: "/goods.Iphone/getOneByType",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BBQServer).Eat(ctx, req.(*Request))
+		return srv.(IphoneServer).GetOneByType(ctx, req.(*Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _BBQ_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "goods.BBQ",
-	HandlerType: (*BBQServer)(nil),
+var _Iphone_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "goods.Iphone",
+	HandlerType: (*IphoneServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "eat",
-			Handler:    _BBQ_Eat_Handler,
+			MethodName: "getOneByType",
+			Handler:    _Iphone_GetOneByType_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
